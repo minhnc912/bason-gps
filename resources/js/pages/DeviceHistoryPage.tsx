@@ -153,7 +153,7 @@ export default function DeviceHistoryPage() {
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="min-w-full">
-                            <thead className="bg-gray-100 text-sm">
+                            <thead className="bg-[#4CAF50] text-white text-sm">
                                 <tr>
                                     <th className="p-4 text-left">
                                         Start Time

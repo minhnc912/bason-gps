@@ -52,11 +52,7 @@ export function useDevices({ page, search }: Params) {
 
     useEffect(() => {
         fetchDevices();
-
-        const interval = setInterval(fetchDevices, POLLING_INTERVAL);
-
-        return () => clearInterval(interval);
-    }, [fetchDevices]);
+    }, [page, search]);
 
     return {
         devices,
