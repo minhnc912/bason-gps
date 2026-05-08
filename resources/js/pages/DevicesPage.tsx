@@ -1,69 +1,129 @@
 import { useEffect, useState } from "react";
 
-import { getDevices } from "@/services/device.service";
+import {
+    createDevice,
+    deleteDevice,
+    updateDevice,
+} from "@/services/device.service";
 
 import Pagination from "@/components/common/Pagination";
 
 import useDebounce from "@/hooks/useDebounce";
 
-import { DEVICE_POLLING_INTERVAL } from "@/constants/device";
 import { Device } from "@/types/devices";
 import DeviceTableSkeleton from "@/components/devices/DeviceTableSkeleton";
 import DeviceTable from "@/components/devices/DeviceTable";
+import { UserRoleEnum } from "@/components/enums/user-role.enum";
+import { useDevices } from "@/hooks/useDevices";
+import { useAuthContext } from "@/app/providers/AuthProvider";
+import toast from "react-hot-toast";
+import { DeviceFormData } from "@/components/devices/DeviceForm";
+import DeviceModal from "@/components/devices/DeviceModal";
+import DeleteDeviceModal from "@/components/devices/DeleteDeviceModal";
 
 export default function DevicesPage() {
-    const [devices, setDevices] = useState<Device[]>([]);
-
-    const [loading, setLoading] = useState(true);
-
     const [page, setPage] = useState(1);
-
-    const [lastPage, setLastPage] = useState(1);
-
     const [search, setSearch] = useState("");
+    const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
+    const [openModal, setOpenModal] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [saving, setSaving] = useState(false);
 
     const debouncedSearch = useDebounce(search);
+    const { devices, loading, pagination, refetch } = useDevices({
+        page,
+        search: debouncedSearch,
+    });
+    const { user } = useAuthContext();
+    const isSuperUser = user?.role === UserRoleEnum.SUPERUSER;
 
-    const fetchDevices = async () => {
+    const handleEdit = (device: Device) => {
+        setSelectedDevice(device);
+        setOpenModal(true);
+    };
+
+    const handleDelete = (device: Device) => {
+        setSelectedDevice(device);
+        setOpenDelete(true);
+    };
+
+    const handleSubmitDevice = async (data: DeviceFormData) => {
         try {
-            const res = await getDevices({
-                page,
-                search: debouncedSearch,
-            });
+            setSaving(true);
 
-            setDevices(res.data.data);
+            if (selectedDevice) {
+                await updateDevice(selectedDevice.id, {
+                    ...data,
+                    status: selectedDevice.status,
+                });
 
-            setLastPage(res.data.last_page);
+                toast.success("Device updated");
+            } else {
+                await createDevice(data);
+
+                toast.success("Device created");
+            }
+
+            setOpenModal(false);
+
+            refetch();
+        } catch {
+            toast.error("Failed to save device");
         } finally {
-            setLoading(false);
+            setSaving(false);
         }
     };
 
-    useEffect(() => {
-        fetchDevices();
-    }, [page, debouncedSearch]);
+    const handleConfirmDelete = async () => {
+        if (!selectedDevice) {
+            return;
+        }
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            fetchDevices();
-        }, DEVICE_POLLING_INTERVAL);
+        try {
+            setSaving(true);
 
-        return () => clearInterval(interval);
-    }, [page, debouncedSearch]);
+            await deleteDevice(selectedDevice.id);
+
+            toast.success("Device deleted");
+
+            setOpenDelete(false);
+
+            refetch();
+        } catch {
+            toast.error("Failed to delete device");
+        } finally {
+            setSaving(false);
+        }
+    };
 
     return (
         <div className="space-y-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                     <h1 className="text-2xl font-bold">Devices</h1>
+
+                    <p className="text-gray-500">Manage realtime GPS devices</p>
                 </div>
 
+                {isSuperUser && (
+                    <button
+                        className="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700"
+                        onClick={() => {
+                            setSelectedDevice(null);
+                            setOpenModal(true);
+                        }}
+                    >
+                        Add Device
+                    </button>
+                )}
+            </div>
+
+            <div>
                 <input
-                    type="text"
-                    placeholder="Search device..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full rounded-xl border px-4 py-2 md:w-80"
+                    placeholder="Search unit ID or serial..."
+                    className="w-full rounded-lg border px-4 py-2"
                 />
             </div>
 
@@ -71,15 +131,36 @@ export default function DevicesPage() {
                 <DeviceTableSkeleton />
             ) : (
                 <>
-                    <DeviceTable devices={devices} isSuperUser={true} />
+                    <DeviceTable
+                        devices={devices}
+                        isSuperUser={isSuperUser}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
 
                     <Pagination
-                        currentPage={page}
-                        lastPage={lastPage}
+                        currentPage={pagination.currentPage}
+                        lastPage={pagination.lastPage}
                         onPageChange={setPage}
                     />
                 </>
             )}
+
+            <DeviceModal
+                open={openModal}
+                title={selectedDevice ? "Edit Device" : "Create Device"}
+                device={selectedDevice}
+                loading={saving}
+                onClose={() => setOpenModal(false)}
+                onSubmit={handleSubmitDevice}
+            />
+
+            <DeleteDeviceModal
+                open={openDelete}
+                loading={saving}
+                onClose={() => setOpenDelete(false)}
+                onConfirm={handleConfirmDelete}
+            />
         </div>
     );
 }

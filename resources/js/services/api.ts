@@ -1,6 +1,7 @@
 import { ROUTES } from "@/constants/route";
 import { STORAGE_KEYS } from "@/constants/storage";
 import { getToken } from "@/utils/auth";
+import { removeEmptyParams } from "@/utils/request";
 import axios from "axios";
 
 const api = axios.create({
@@ -17,10 +18,10 @@ api.interceptors.request.use((config) => {
     const opcenterId = localStorage.getItem(STORAGE_KEYS.OPCENTER_ID);
 
     if (opcenterId) {
-        config.params = {
+        config.params = removeEmptyParams({
             ...config.params,
             opcenter_id: opcenterId,
-        };
+        });
     }
 
     return config;
