@@ -1,16 +1,20 @@
 import { ROUTES } from "@/constants/route";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/img/duke-energy.png";
-import { Button } from "./ui/Button";
+import { Button } from "../ui/Button";
 import { useAuth } from "@/hooks/useAuth";
-import clsx from "clsx";
+import NavLinks from "./NavLinks";
+import { PRIVATE_NAV_ITEMS, PUBLIC_NAV_ITEMS } from "@/constants/navigation";
+import OpcenterSwitcher from "./OpcenterSwitcher";
+import { useAuthContext } from "@/app/providers/AuthProvider";
+import { UserRoleEnum } from "../enums/user-role.enum";
 
 export default function Header() {
     const { logout } = useAuth();
+    const { user } = useAuthContext();
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation();
 
     const isAuth = !!localStorage.getItem("auth_token");
 
@@ -18,11 +22,6 @@ export default function Header() {
         logout();
         setOpen(false);
     };
-
-    const navLinkClass = (path: string) => `
-        text-sm font-medium transition-colors hover:text-blue-600
-        ${location.pathname === path ? "text-blue-600" : "text-gray-600"}
-    `;
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60">
@@ -42,28 +41,24 @@ export default function Header() {
                 {/* DESKTOP NAV */}
                 <nav className="hidden md:flex items-center gap-8">
                     {isAuth ? (
-                        <div className="flex w-full justify-between items-center gap-4">
-                            <Link
-                                to={ROUTES.DASHBOARD}
-                                className={navLinkClass(ROUTES.DASHBOARD)}
-                            >
-                                Dashboard
-                            </Link>
+                        <div className="flex items-center gap-6">
+                            <NavLinks items={PRIVATE_NAV_ITEMS} />
+
+                            {user?.role !== UserRoleEnum.SUPERUSER && (
+                                <OpcenterSwitcher />
+                            )}
+
                             <Button
                                 onClick={handleLogout}
-                                className="bg-red-600 hover:bg-red-700 max-w-22"
+                                className="bg-red-600 hover:bg-red-700"
                             >
                                 Logout
                             </Button>
                         </div>
                     ) : (
                         <div className="flex items-center gap-4">
-                            <Link
-                                to={ROUTES.LOGIN}
-                                className={navLinkClass(ROUTES.LOGIN)}
-                            >
-                                Login
-                            </Link>
+                            <NavLinks items={PUBLIC_NAV_ITEMS} />
+
                             <Button
                                 onClick={() => navigate(ROUTES.REGISTER)}
                                 className="h-9 px-5 bg-blue-600 hover:bg-blue-700 text-white"
@@ -89,16 +84,15 @@ export default function Header() {
                     <div className="flex flex-col space-y-4 px-4 py-6">
                         {isAuth ? (
                             <>
-                                <Link
-                                    to={ROUTES.DASHBOARD}
-                                    className={clsx(
-                                        `text-lg font-medium `,
-                                        navLinkClass(ROUTES.DASHBOARD),
-                                    )}
-                                    onClick={() => setOpen(false)}
-                                >
-                                    Dashboard
-                                </Link>
+                                <NavLinks
+                                    items={PRIVATE_NAV_ITEMS}
+                                    mobile
+                                    onNavigate={() => setOpen(false)}
+                                />
+
+                                {user?.role !== UserRoleEnum.SUPERUSER && (
+                                    <OpcenterSwitcher />
+                                )}
                                 <Button
                                     className="w-full bg-red-600"
                                     onClick={handleLogout}
@@ -107,24 +101,11 @@ export default function Header() {
                                 </Button>
                             </>
                         ) : (
-                            <>
-                                <Link
-                                    to={ROUTES.LOGIN}
-                                    className="text-lg font-medium text-gray-700"
-                                    onClick={() => setOpen(false)}
-                                >
-                                    Login
-                                </Link>
-                                <Button
-                                    onClick={() => {
-                                        navigate(ROUTES.REGISTER);
-                                        setOpen(false);
-                                    }}
-                                    className="w-full bg-blue-600"
-                                >
-                                    Get Started!
-                                </Button>
-                            </>
+                            <NavLinks
+                                items={PUBLIC_NAV_ITEMS}
+                                mobile
+                                onNavigate={() => setOpen(false)}
+                            />
                         )}
                     </div>
                 </div>

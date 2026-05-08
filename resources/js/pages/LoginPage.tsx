@@ -5,16 +5,15 @@ import toast from "react-hot-toast";
 import { loginSchema } from "@/schemas/auth.schema";
 import z from "zod";
 import { useAuthContext } from "@/app/providers/AuthProvider";
-import { useOpcenters } from "@/hooks/useOpcenters";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormField } from "@/components/ui/FormField";
 import logo from "@/assets/img/duke-energy.png";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/route";
+import { UserRoleEnum } from "@/components/enums/user-role.enum";
 
 type LoginInput = z.input<typeof loginSchema>;
-type LoginOutput = z.output<typeof loginSchema>;
 
 export default function LoginPage() {
     const {
@@ -25,25 +24,27 @@ export default function LoginPage() {
         resolver: zodResolver(loginSchema),
     });
     const { login } = useAuth();
-    const { opCenters } = useOpcenters();
     const { setUser } = useAuthContext();
     const navigate = useNavigate();
 
     const onSubmit = async (data: LoginInput) => {
-        const parsed: LoginOutput = loginSchema.parse(data);
         try {
             const res = await login({
                 email: data.email,
                 password: data.password,
-                opcenter_id: parsed.opcenter_id,
             });
 
             setUser(res.user);
 
-            toast.success("Login Successfully");
-            navigate(ROUTES.DASHBOARD);
-        } catch {
-            toast.error("Email or password is wrong!");
+            const user = res.user;
+
+            if (user.role === UserRoleEnum.SUPERUSER) {
+                navigate(ROUTES.HOME);
+            } else {
+                navigate(ROUTES.SELECT_OPCENTER);
+            }
+        } catch (error: any) {
+            toast.error(error?.response?.data?.message ?? "Login failed");
         }
     };
 
@@ -72,22 +73,6 @@ export default function LoginPage() {
                         placeholder="Enter password"
                         {...register("password")}
                     />
-                </FormField>
-
-                <FormField label="Center" error={errors.opcenter_id?.message}>
-                    <select
-                        {...register("opcenter_id")}
-                        className="w-full rounded-lg border px-3 py-2 text-sm
-                    focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                        <option value="">Choose a center</option>
-
-                        {opCenters?.map((o) => (
-                            <option key={o.id} value={o.id}>
-                                {o.name}
-                            </option>
-                        ))}
-                    </select>
                 </FormField>
 
                 <Button type="submit" loading={isSubmitting}>

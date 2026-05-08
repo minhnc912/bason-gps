@@ -43,7 +43,8 @@ export function useAuth() {
     };
 
     const logout = () => {
-        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+        const keysToRemove = [STORAGE_KEYS.TOKEN, STORAGE_KEYS.OPCENTER_ID];
+        keysToRemove.forEach((key) => localStorage.removeItem(key));
         navigate(ROUTES.HOME);
     };
 

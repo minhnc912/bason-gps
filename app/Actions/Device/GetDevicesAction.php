@@ -18,7 +18,7 @@ class GetDevicesAction
 
         $query = Device::query()->with('state');
 
-        if ($user->role !== UserRoleEnum::SUPERUSER->value) {
+        if (!$user->hasRole(UserRoleEnum::SUPERUSER->value)) {
             $query->where('opcenter_id', $opcenterId);
         }
 

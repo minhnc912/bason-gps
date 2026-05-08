@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,6 +13,12 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'opcenter_id' => 'nullable|exists:opcenters,id',
+        ]);
+
         $credentials = $request->only('email', 'password');
 
         if (!Auth::attempt($credentials)) {
@@ -27,7 +34,7 @@ class AuthController extends Controller
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'role' => $user->role,
+                'role' => $user->getRoleNames()->first(),
             ],
             'opcenter_id' => $request->opcenter_id,
         ]);

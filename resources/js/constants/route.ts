@@ -2,7 +2,7 @@ export const ROUTES = {
     HOME: "/",
     LOGIN: "/login",
     REGISTER: "/register",
-    DASHBOARD: "/dashboard",
+    SELECT_OPCENTER: "/select-opcenter",
     DEVICES: "/devices",
 
     // dynamic

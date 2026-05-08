@@ -31,7 +31,7 @@ api.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             localStorage.removeItem(STORAGE_KEYS.TOKEN);
-            window.location.href = ROUTES.LOGIN;
+            globalThis.location.href = ROUTES.LOGIN;
         }
 
         return Promise.reject(error);

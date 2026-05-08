@@ -15,10 +15,6 @@ export const loginSchema = z.object({
             MINIMUM_PASSWORD_CHARACTERS,
             VALIDATION_MESSAGES.MINIMUM_PASSWORD_CHARACTERS,
         ),
-
-    opcenter_id: z.coerce
-        .number()
-        .refine((val) => val > 0, VALIDATION_MESSAGES.REQUIRED_OPCENTER),
 });
 
 export const registerSchema = z.object({

@@ -1,7 +1,7 @@
 export interface LoginPayload {
     email: string;
     password: string;
-    opcenter_id: number;
+    opcenter_id?: number;
 }
 
 export interface RegisterPayload {
