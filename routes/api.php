@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\DeviceIngestController;
 use App\Http\Controllers\Api\OpcenterController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\DeviceHistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
 
     Route::get('/user', fn(Request $request) => $request->user());
+
+    Route::middleware('role:' . UserRoleEnum::SUPERUSER->value)->group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+
+        Route::put('/users/{user}/role', [UserController::class, 'updateRole']);
+    });
 
     // Devices
 
