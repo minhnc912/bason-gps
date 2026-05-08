@@ -43,9 +43,9 @@ export default function OpcenterSwitcher() {
         >
             <option value="">Select center</option>
 
-            {opCenters.map((opCenter) => (
-                <option key={opCenter.id} value={String(opCenter.id)}>
-                    {opCenter.name}
+            {opCenters.map((opcenter) => (
+                <option key={opcenter.id} value={String(opcenter.id)}>
+                    {opcenter.name}
                 </option>
             ))}
         </select>

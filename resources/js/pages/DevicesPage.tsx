@@ -11,15 +11,17 @@ import Pagination from "@/components/common/Pagination";
 import useDebounce from "@/hooks/useDebounce";
 
 import { Device } from "@/types/devices";
-import DeviceTableSkeleton from "@/components/devices/DeviceTableSkeleton";
-import DeviceTable from "@/components/devices/DeviceTable";
+import DeviceTableSkeleton from "@/components/pages/devices/DeviceTableSkeleton";
+import DeviceTable from "@/components/pages/devices/DeviceTable";
 import { UserRoleEnum } from "@/components/enums/user-role.enum";
 import { useDevices } from "@/hooks/useDevices";
 import { useAuthContext } from "@/app/providers/AuthProvider";
 import toast from "react-hot-toast";
-import { DeviceFormData } from "@/components/devices/DeviceForm";
-import DeviceModal from "@/components/devices/DeviceModal";
-import DeleteDeviceModal from "@/components/devices/DeleteDeviceModal";
+import DeviceForm, {
+    DeviceFormData,
+} from "@/components/pages/devices/DeviceForm";
+import Modal from "@/components/common/Modal";
+import ConfirmModal from "@/components/common/ConfirmModal";
 
 export default function DevicesPage() {
     const [page, setPage] = useState(1);
@@ -146,20 +148,33 @@ export default function DevicesPage() {
                 </>
             )}
 
-            <DeviceModal
+            <Modal
                 open={openModal}
-                title={selectedDevice ? "Edit Device" : "Create Device"}
-                device={selectedDevice}
-                loading={saving}
                 onClose={() => setOpenModal(false)}
-                onSubmit={handleSubmitDevice}
-            />
+                title={selectedDevice ? "Edit Device" : "Create Device"}
+            >
+                <DeviceForm
+                    defaultValues={
+                        selectedDevice
+                            ? {
+                                  unit_id: selectedDevice.unit_id,
+                                  serial: selectedDevice.serial ?? "",
+                                  opcenter_id: selectedDevice.opcenter_id,
+                              }
+                            : undefined
+                    }
+                    loading={saving}
+                    onSubmit={handleSubmitDevice}
+                />
+            </Modal>
 
-            <DeleteDeviceModal
+            <ConfirmModal
                 open={openDelete}
                 loading={saving}
                 onClose={() => setOpenDelete(false)}
                 onConfirm={handleConfirmDelete}
+                title="Delete Device"
+                description="Are you sure?"
             />
         </div>
     );

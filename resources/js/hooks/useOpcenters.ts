@@ -1,26 +1,33 @@
-import { getOpCenters } from "@/services/opcenter.service";
-import { OpCenter } from "@/types/opcenter";
 import { useEffect, useState } from "react";
 
-export function useOpcenters() {
-    const [opCenters, setOpCenters] = useState<OpCenter[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+import { getOpcenterOptions } from "@/services/opcenter.service";
 
-    const fetchOpCenters = async () => {
-        try {
-            const res = await getOpCenters();
-            setOpCenters(res.data);
-        } catch {
-            setError("Không load được danh sách khu vực");
-        } finally {
-            setLoading(false);
-        }
-    };
+import type { Opcenter } from "@/types/opcenter";
+
+export function useOpcenters() {
+    const [opCenters, setOpCenters] = useState<Opcenter[]>([]);
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchOpCenters();
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+
+                const res = await getOpcenterOptions();
+                console.log(res.data);
+
+                setOpCenters(res.data);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, []);
 
-    return { opCenters, loading, error, refetch: fetchOpCenters };
+    return {
+        opCenters,
+        loading,
+    };
 }
