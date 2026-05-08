@@ -26,4 +26,8 @@ export const PRIVATE_NAV_ITEMS: NavigationItem[] = [
         path: ROUTES.USERS,
         roles: [USER_ROLES.SUPERUSER],
     },
+    {
+        label: "Opcenters",
+        path: ROUTES.OPCENTERS,
+    },
 ];

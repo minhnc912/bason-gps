@@ -2,7 +2,7 @@ import { ROUTES } from "@/constants/route";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/img/duke-energy.png";
-import { Button } from "../ui/Button";
+import { Button } from "../common/Button";
 import { useAuth } from "@/hooks/useAuth";
 import NavLinks from "./NavLinks";
 import { PRIVATE_NAV_ITEMS, PUBLIC_NAV_ITEMS } from "@/constants/navigation";

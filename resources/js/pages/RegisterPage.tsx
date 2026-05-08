@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/useAuth";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
-import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/common/Input";
+import { Button } from "@/components/common/Button";
+import { FormField } from "@/components/common/FormField";
 import { registerSchema } from "@/schemas/auth.schema";
 import z from "zod";
 import { useForm } from "react-hook-form";

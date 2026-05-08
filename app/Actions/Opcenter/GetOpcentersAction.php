@@ -2,12 +2,32 @@
 
 namespace App\Actions\Opcenter;
 
+use App\Enums\PaginationEnum;
 use App\Models\Opcenter;
+use Illuminate\Http\Request;
 
 class GetOpcentersAction
 {
-    public function execute()
+    public function execute(Request $request)
     {
-        return Opcenter::withCount('devices')->get();
+        $search =
+            $request->query('search');
+
+        $query =
+            Opcenter::query();
+
+        if ($search) {
+
+            $query->where(
+                'name',
+                'like',
+                "%{$search}%"
+            );
+        }
+
+        return $query
+            ->paginate(
+                PaginationEnum::DEFAULT_PER_PAGE->value
+            );
     }
 }

@@ -5,6 +5,7 @@ export const ROUTES = {
     USERS: "/users",
     SELECT_OPCENTER: "/select-opcenter",
     DEVICES: "/devices",
+    OPCENTERS: "/opcenters",
 
     // dynamic
     DEVICE_HISTORIES: `/devices/:id/history`,

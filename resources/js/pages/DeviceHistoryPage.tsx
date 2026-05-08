@@ -9,8 +9,8 @@ import { DeviceHistory, DeviceHistoryResponse } from "@/types/device-history";
 import { formatDuration } from "@/utils/date";
 
 import { ROUTES } from "@/constants/route";
-import PowerBadge from "@/components/devices/PowerBadge";
-import AddressLink from "@/components/devices/AddressLink";
+import PowerBadge from "@/components/pages/devices/PowerBadge";
+import AddressLink from "@/components/pages/devices/AddressLink";
 
 export default function DeviceHistoryPage() {
     const { id } = useParams();

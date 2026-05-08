@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { ROUTES } from "@/constants/route";
 
 import { STORAGE_KEYS } from "@/constants/storage";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/common/Button";
 import { useOpcenters } from "@/hooks/useOpcenters";
 
 export default function SelectOpcenterPage() {
@@ -68,12 +68,12 @@ export default function SelectOpcenterPage() {
                             >
                                 <option value="">Choose an opcenter</option>
 
-                                {opCenters.map((opCenter) => (
+                                {opCenters.map((opcenter) => (
                                     <option
-                                        key={opCenter.id}
-                                        value={opCenter.id}
+                                        key={opcenter.id}
+                                        value={opcenter.id}
                                     >
-                                        {opCenter.name}
+                                        {opcenter.name}
                                     </option>
                                 ))}
                             </select>

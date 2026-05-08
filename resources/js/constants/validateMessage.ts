@@ -3,6 +3,6 @@ export const VALIDATION_MESSAGES = {
     INVALID_EMAIL: "Invalid Email!",
     REQUIRED_PASSWORD: "Password must not be empty!",
     MINIMUM_PASSWORD_CHARACTERS: "Password must be at least 6 characters!",
-    REQUIRED_OPCENTER: "OpCenter must be selected!",
+    REQUIRED_OPCENTER: "Opcenter must be selected!",
     MINIMUM_USERNAM_CHARACTERS: "Name must be at least 2 characters!",
 };

@@ -1,13 +1,13 @@
 import { useAuth } from "@/hooks/useAuth";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/common/Input";
+import { Button } from "@/components/common/Button";
 import toast from "react-hot-toast";
 import { loginSchema } from "@/schemas/auth.schema";
 import z from "zod";
 import { useAuthContext } from "@/app/providers/AuthProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormField } from "@/components/ui/FormField";
+import { FormField } from "@/components/common/FormField";
 import logo from "@/assets/img/duke-energy.png";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/route";

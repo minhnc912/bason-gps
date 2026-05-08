@@ -16,7 +16,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::get('/opcenters', [OpcenterController::class, 'index']);
+Route::get('/opcenters/options', [OpcenterController::class, 'options']);
 
 // Authenticated Routes
 
@@ -31,6 +31,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
 
         Route::put('/users/{user}/role', [UserController::class, 'updateRole']);
+
+        Route::get('/opcenters', [OpcenterController::class, 'index']);
+        Route::post('/opcenters', [OpcenterController::class, 'store']);
+
+        Route::put('/opcenters/{opcenter}', [OpcenterController::class, 'update']);
+
+        Route::delete('/opcenters/{opcenter}', [OpcenterController::class, 'destroy']);
     });
 
     // Devices

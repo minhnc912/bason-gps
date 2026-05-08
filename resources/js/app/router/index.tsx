@@ -10,6 +10,7 @@ import DevicesPage from "@/pages/DevicesPage";
 import DeviceHistoryPage from "@/pages/DeviceHistoryPage";
 import SelectOpcenterPage from "@/pages/SelectOpcenterPage";
 import UsersPage from "@/pages/UsersPage";
+import OpcentersPage from "@/pages/OpcentersPage";
 
 export default function AppRouter() {
     return (
@@ -47,6 +48,15 @@ export default function AppRouter() {
                         element={
                             <ProtectedRoute>
                                 <UsersPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path={ROUTES.OPCENTERS}
+                        element={
+                            <ProtectedRoute>
+                                <OpcentersPage />
                             </ProtectedRoute>
                         }
                     />
