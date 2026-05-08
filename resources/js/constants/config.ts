@@ -1,0 +1,3 @@
+export const POLLING_INTERVAL = 10000;
+export const GPS_THRESHOLD = 0.0001;
+export const MINIMUM_PASSWORD_CHARACTERS = 6;

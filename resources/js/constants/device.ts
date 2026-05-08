@@ -1,0 +1,5 @@
+export const DEVICE_POLLING_INTERVAL = 15000;
+
+export const DEVICE_ONLINE_MINUTES = 5;
+
+export const DEVICE_TABLE_PAGE_SIZE = 10;
