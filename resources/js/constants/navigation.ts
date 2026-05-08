@@ -1,4 +1,13 @@
 import { ROUTES } from "./route";
+import { USER_ROLES } from "./user-role";
+
+export interface NavigationItem {
+    label: string;
+
+    path: string;
+
+    roles?: string[];
+}
 
 export const PUBLIC_NAV_ITEMS = [
     {
@@ -7,9 +16,14 @@ export const PUBLIC_NAV_ITEMS = [
     },
 ];
 
-export const PRIVATE_NAV_ITEMS = [
+export const PRIVATE_NAV_ITEMS: NavigationItem[] = [
     {
         label: "Devices",
         path: ROUTES.DEVICES,
+    },
+    {
+        label: "Users",
+        path: ROUTES.USERS,
+        roles: [USER_ROLES.SUPERUSER],
     },
 ];

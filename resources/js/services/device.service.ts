@@ -1,3 +1,4 @@
+import { removeEmptyParams } from "@/utils/request";
 import api from "./api";
 import { DevicePagination } from "@/types/devices";
 import { API_ENDPOINTS } from "@/constants/api";
@@ -26,8 +27,9 @@ export interface UpdateDevicePayload {
 }
 
 export const getDevices = async (params: DeviceQueryParams) => {
+    const paramEmptyRemoved = removeEmptyParams({ ...params });
     return api.get<DevicePagination>(API_ENDPOINTS.DEVICES, {
-        params,
+        params: paramEmptyRemoved,
     });
 };
 

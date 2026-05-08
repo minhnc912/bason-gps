@@ -23,6 +23,14 @@ export default function Header() {
         setOpen(false);
     };
 
+    const filteredNavItems = PRIVATE_NAV_ITEMS.filter((item) => {
+        if (!item.roles) {
+            return true;
+        }
+
+        return item.roles.includes(user?.role ?? "");
+    });
+
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 h-16">
@@ -42,7 +50,7 @@ export default function Header() {
                 <nav className="hidden md:flex items-center gap-8">
                     {isAuth ? (
                         <div className="flex items-center gap-6">
-                            <NavLinks items={PRIVATE_NAV_ITEMS} />
+                            <NavLinks items={filteredNavItems} />
 
                             {user?.role !== UserRoleEnum.SUPERUSER && (
                                 <OpcenterSwitcher />
@@ -85,7 +93,7 @@ export default function Header() {
                         {isAuth ? (
                             <>
                                 <NavLinks
-                                    items={PRIVATE_NAV_ITEMS}
+                                    items={filteredNavItems}
                                     mobile
                                     onNavigate={() => setOpen(false)}
                                 />
@@ -101,11 +109,19 @@ export default function Header() {
                                 </Button>
                             </>
                         ) : (
-                            <NavLinks
-                                items={PUBLIC_NAV_ITEMS}
-                                mobile
-                                onNavigate={() => setOpen(false)}
-                            />
+                            <>
+                                <NavLinks
+                                    items={PUBLIC_NAV_ITEMS}
+                                    mobile
+                                    onNavigate={() => setOpen(false)}
+                                />
+                                <Button
+                                    onClick={() => navigate(ROUTES.REGISTER)}
+                                    className="h-9 px-5 bg-blue-600 hover:bg-blue-700 text-white"
+                                >
+                                    Get Started!
+                                </Button>
+                            </>
                         )}
                     </div>
                 </div>
