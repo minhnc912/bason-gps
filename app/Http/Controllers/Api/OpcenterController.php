@@ -24,13 +24,4 @@ class OpcenterController extends Controller
         return response()->json($action->execute($validated), 201);
     }
 
-    public function assignUser(Request $request, AssignUserToOpcenterAction $action)
-    {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'opcenter_id' => 'required|exists:opcenters,id',
-        ]);
-
-        return response()->json($action->execute($validated['user_id'], $validated['opcenter_id']));
-    }
 }

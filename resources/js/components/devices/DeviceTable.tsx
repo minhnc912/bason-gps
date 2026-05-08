@@ -1,5 +1,5 @@
 import { Device } from "@/types/devices";
-import { formatPowerStatus, isApproximateLocation } from "@/utils/device";
+import { isApproximateLocation } from "@/utils/device";
 
 import { Link } from "react-router-dom";
 import EyeIcon from "@/assets/icon/EyeIcon";
@@ -9,11 +9,17 @@ import AddressLink from "./AddressLink";
 
 interface Props {
     devices: Device[];
-
     isSuperUser: boolean;
+    onEdit: (device: Device) => void;
+    onDelete: (device: Device) => void;
 }
 
-export default function DeviceTable({ devices, isSuperUser }: Props) {
+export default function DeviceTable({
+    devices,
+    isSuperUser,
+    onEdit,
+    onDelete,
+}: Props) {
     return (
         <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
             <div className="overflow-x-auto">
@@ -131,11 +137,21 @@ export default function DeviceTable({ devices, isSuperUser }: Props) {
                                     {isSuperUser && (
                                         <td className="p-4">
                                             <div className="flex gap-2">
-                                                <button className="rounded-lg border px-3 py-1 text-sm hover:bg-gray-100">
+                                                <button
+                                                    className="rounded-lg border px-3 py-1 text-sm hover:bg-gray-100 cursor-pointer"
+                                                    onClick={() =>
+                                                        onEdit(device)
+                                                    }
+                                                >
                                                     Edit
                                                 </button>
 
-                                                <button className="rounded-lg border border-red-200 px-3 py-1 text-sm text-red-600 hover:bg-red-50">
+                                                <button
+                                                    className="rounded-lg border border-red-200 px-3 py-1 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
+                                                    onClick={() =>
+                                                        onDelete(device)
+                                                    }
+                                                >
                                                     Delete
                                                 </button>
                                             </div>

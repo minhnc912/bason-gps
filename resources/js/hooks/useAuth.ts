@@ -21,10 +21,13 @@ export function useAuth() {
             const res = await loginApi(payload);
 
             localStorage.setItem(STORAGE_KEYS.TOKEN, res.data.token);
-            localStorage.setItem(
-                STORAGE_KEYS.OPCENTER_ID,
-                String(payload.opcenter_id),
-            );
+            if (payload.opcenter_id) {
+                localStorage.setItem(
+                    STORAGE_KEYS.OPCENTER_ID,
+                    String(payload.opcenter_id),
+                );
+            }
+
             return res.data;
         } finally {
             setLoading(false);
