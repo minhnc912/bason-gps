@@ -22,8 +22,6 @@ export interface UpdateDevicePayload {
     serial?: string;
 
     opcenter_id: number;
-
-    status: string;
 }
 
 export const getDevices = async (params: DeviceQueryParams) => {

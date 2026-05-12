@@ -49,10 +49,10 @@ class ProcessDeviceRealtimeDataAction
         $historyTooOld =
             !$lastHistory ||
             $lastHistory->created_at->diffInMinutes(now())
-            >= GpsTrackingEnum::HISTORY_INTERVAL_MINUTES->value;
+            >= GpsTrackingEnum::HISTORY_INTERVAL_MINUTES;
 
         $shouldCreateHistory =
-            $distance >= GpsTrackingEnum::MIN_DISTANCE_METERS->value
+            $distance >= GpsTrackingEnum::MIN_DISTANCE_DELTA
             || $powerChanged
             || $historyTooOld;
 

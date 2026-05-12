@@ -2,11 +2,11 @@
 
 namespace App\Enums;
 
-enum GpsTrackingEnum:int
+class GpsTrackingEnum
 {
-    case MIN_DISTANCE_METERS = 20;
+    public const MIN_DISTANCE_DELTA = 0.0003;
 
-    case ADDRESS_UPDATE_DISTANCE_METERS = 50;
+    public const HISTORY_DISTANCE_DELTA = 0.002;
 
-    case HISTORY_INTERVAL_MINUTES = 30;
+    public const HISTORY_INTERVAL_MINUTES = 30;
 }

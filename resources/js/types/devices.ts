@@ -5,8 +5,6 @@ export interface Device {
 
     serial: string | null;
 
-    status: string;
-
     opcenter_id: number;
 
     note: string | null;

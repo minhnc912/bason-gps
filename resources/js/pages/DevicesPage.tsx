@@ -54,10 +54,7 @@ export default function DevicesPage() {
             setSaving(true);
 
             if (selectedDevice) {
-                await updateDevice(selectedDevice.id, {
-                    ...data,
-                    status: selectedDevice.status,
-                });
+                await updateDevice(selectedDevice.id, data);
 
                 toast.success("Device updated");
             } else {

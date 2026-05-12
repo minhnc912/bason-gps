@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeviceHistory extends Model
 {
-    protected $fillable = ['device_id', 'latitude', 'longitude', 'power_status', 'temperature', 'tool_watch', 'address', 'started_at', 'ended_at', 'duration_seconds'];
+    protected $fillable = ['device_id', 'latitude', 'longitude', 'power_status', 'temperature', 'tool_watch', 'address', 'started_at', 'ended_at', 'duration_seconds', 'operator', 'firmware_version'];
 
     protected $casts = [
         'power_status' => 'boolean',
