@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Opcenter extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'legacy_group_id',];
 
     public function devices()
     {

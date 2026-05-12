@@ -25,7 +25,7 @@ export default function Pagination({
             <button
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
-                className="rounded-lg border px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg border px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
             >
                 Prev
             </button>
@@ -35,11 +35,11 @@ export default function Pagination({
                     key={page}
                     onClick={() => onPageChange(page)}
                     className={clsx(
-                        "rounded-lg border px-4 py-2 text-sm transition-colors",
+                        "rounded-lg border px-4 py-2 text-sm transition-colors ",
 
                         currentPage === page
                             ? "bg-blue-600 text-white border-blue-600"
-                            : "hover:bg-gray-100",
+                            : "hover:bg-gray-100 cursor-pointer",
                     )}
                 >
                     {page}
@@ -49,7 +49,7 @@ export default function Pagination({
             <button
                 disabled={currentPage === lastPage}
                 onClick={() => onPageChange(currentPage + 1)}
-                className="rounded-lg border px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg border px-4 py-2 text-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             >
                 Next
             </button>

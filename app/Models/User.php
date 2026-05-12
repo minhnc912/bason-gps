@@ -20,7 +20,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasRoles, HasApiTokens;
 
     protected $guard_name = 'web';
-
+    protected $fillable = ['legacy_user_id'];
     /**
      * Get the attributes that should be cast.
      *

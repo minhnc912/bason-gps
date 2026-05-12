@@ -1,10 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
+
 import toast from "react-hot-toast";
+
 import { getMapDevices } from "@/services/map.service";
+
 import { MapDevice } from "@/types/map";
+
 import { POLLING_INTERVAL } from "@/constants/config";
 
-export function useMapDevices() {
+interface Params {
+    search: string;
+}
+
+export function useMapDevices({ search }: Params) {
     const [devices, setDevices] = useState<MapDevice[]>([]);
 
     const [loading, setLoading] = useState(false);
@@ -13,7 +21,9 @@ export function useMapDevices() {
         try {
             setLoading(true);
 
-            const response = await getMapDevices();
+            const response = await getMapDevices({
+                search,
+            });
 
             setDevices(response.data.data);
         } catch {
@@ -21,7 +31,7 @@ export function useMapDevices() {
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [search]);
 
     useEffect(() => {
         fetchDevices();
@@ -29,7 +39,7 @@ export function useMapDevices() {
         const interval = setInterval(fetchDevices, POLLING_INTERVAL);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [fetchDevices]);
 
     return {
         devices,

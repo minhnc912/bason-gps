@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
@@ -7,6 +7,7 @@ import type { Map as LeafletMap } from "leaflet";
 import L from "leaflet";
 
 import { useMapDevices } from "@/hooks/useMapDevices";
+import useDebounce from "@/hooks/useDebounce";
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -20,7 +21,11 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function MapPage() {
-    const { devices } = useMapDevices();
+    const [search, setSearch] = useState("");
+    const debouncedSearch = useDebounce(search, 500);
+    const { devices } = useMapDevices({
+        search: debouncedSearch,
+    });
 
     const mapRef = useRef<LeafletMap | null>(null);
 
@@ -55,6 +60,14 @@ export default function MapPage() {
                 <div className="p-4 border-b font-semibold text-lg">
                     Devices
                 </div>
+
+                <input
+                    type="text"
+                    placeholder="Search device..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full rounded border px-3 py-2"
+                />
 
                 <div className="divide-y">
                     {validDevices.map((device) => (

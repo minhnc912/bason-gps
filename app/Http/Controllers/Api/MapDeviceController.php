@@ -10,7 +10,30 @@ class MapDeviceController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $devices = Device::query()->with('state')->when($request->opcenter_id, fn($query) => $query->where('opcenter_id', $request->opcenter_id))->get();
+        $search = $request->search;
+
+        $devices = Device::query()
+            ->with('state')
+
+            ->when($request->opcenter_id, fn($query) => $query->where('opcenter_id', $request->opcenter_id))
+
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query
+                        ->where('unit_id', 'like', "%{$search}%")
+
+                        ->orWhere('serial', 'like', "%{$search}%")
+
+                        ->orWhereHas('state', function ($query) use ($search) {
+                            $query
+                                ->where('address', 'like', "%{$search}%")
+
+                                ->orWhere('tool_watch', 'like', "%{$search}%");
+                        });
+                });
+            })
+
+            ->get();
 
         return response()->json([
             'data' => $devices->map(function ($device) {
