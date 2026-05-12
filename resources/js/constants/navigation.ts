@@ -30,4 +30,8 @@ export const PRIVATE_NAV_ITEMS: NavigationItem[] = [
         label: "Opcenters",
         path: ROUTES.OPCENTERS,
     },
+    {
+        label: "Map",
+        path: ROUTES.Map,
+    },
 ];

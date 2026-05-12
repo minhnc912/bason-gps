@@ -11,6 +11,7 @@ import DeviceHistoryPage from "@/pages/DeviceHistoryPage";
 import SelectOpcenterPage from "@/pages/SelectOpcenterPage";
 import UsersPage from "@/pages/UsersPage";
 import OpcentersPage from "@/pages/OpcentersPage";
+import MapPage from "@/pages/MapPage";
 
 export default function AppRouter() {
     return (
@@ -75,6 +76,15 @@ export default function AppRouter() {
                         element={
                             <ProtectedRoute>
                                 <DeviceHistoryPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path={ROUTES.Map}
+                        element={
+                            <ProtectedRoute>
+                                <MapPage />
                             </ProtectedRoute>
                         }
                     />

@@ -3,6 +3,7 @@
 namespace App\Actions\Realtime;
 
 use App\Services\Geocoding\GoogleGeocodingService;
+use App\Services\Geocoding\OpenStreetMapGeocodingService;
 
 class ResolveAddressAction
 {
@@ -12,6 +13,7 @@ class ResolveAddressAction
             return null;
         }
 
-        return app(GoogleGeocodingService::class)->reverseGeocode($latitude, $longitude);
+        // return app(GoogleGeocodingService::class)->reverseGeocode($latitude, $longitude);
+        return app(OpenStreetMapGeocodingService::class)->reverseGeocode($latitude, $longitude);
     }
 }

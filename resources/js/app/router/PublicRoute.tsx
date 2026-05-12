@@ -8,7 +8,7 @@ export default function PublicRoute({ children }: any) {
     if (loading) return null;
 
     if (isAuthenticated) {
-        return <Navigate to={ROUTES.DASHBOARD} replace />;
+        return <Navigate to={ROUTES.HOME} replace />;
     }
 
     return children;

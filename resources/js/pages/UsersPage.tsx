@@ -5,6 +5,9 @@ import { useUsers } from "@/hooks/useUsers";
 import { updateUserRole } from "@/services/user.service";
 import { USER_ROLES } from "@/constants/user-role";
 import useDebounce from "@/hooks/useDebounce";
+import { useAuthContext } from "@/app/providers/AuthProvider";
+import { UserRoleEnum } from "@/components/enums/user-role.enum";
+import clsx from "clsx";
 
 export default function UsersPage() {
     const [page, setPage] = useState(1);
@@ -75,7 +78,17 @@ export default function UsersPage() {
                                                 e.target.value,
                                             )
                                         }
-                                        className="rounded-lg border px-3 py-2"
+                                        disabled={
+                                            user.name ===
+                                            UserRoleEnum.SUPERADMIN
+                                        }
+                                        className={clsx(
+                                            "rounded-lg border px-3 py-2 ",
+                                            user.name ===
+                                                UserRoleEnum.SUPERADMIN
+                                                ? "bg-gray-300 cursor-not-allowed"
+                                                : "cursor-pointer",
+                                        )}
                                     >
                                         {Object.values(USER_ROLES).map(
                                             (role) => (

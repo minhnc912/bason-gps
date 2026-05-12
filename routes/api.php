@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\DeviceIngestController;
 use App\Http\Controllers\Api\LegacyDeviceIngestController;
+use App\Http\Controllers\Api\MapDeviceController;
 use App\Http\Controllers\Api\OpcenterController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\DeviceHistoryController;
@@ -19,11 +20,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/opcenters/options', [OpcenterController::class, 'options']);
 
-Route::match(
-    ['GET', 'POST'],
-    '/postdata',
-    LegacyDeviceIngestController::class
-);
+Route::match(['GET', 'POST'], '/postdata', LegacyDeviceIngestController::class);
 
 // Authenticated Routes
 
@@ -72,4 +69,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('/opcenters', [OpcenterController::class, 'store']);
     });
+
+    // map
+
+    Route::get('/map/devices', MapDeviceController::class);
 });

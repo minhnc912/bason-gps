@@ -5,5 +5,6 @@ export const API_ENDPOINTS = {
     OPCENTERS: "/opcenters",
     OPCENTERSOPTIONS: "/opcenters/options",
     DEVICES: "/devices",
+    MAP_DEVICES: "/map/devices",
     DEVICE_HISTORIES: (deviceId: number) => `/devices/${deviceId}/histories`,
 };
