@@ -131,11 +131,9 @@ export default function MapPage() {
                                         {device.address}
                                     </div>
 
-                                    <div>Status: {device.tool_watch}</div>
-
                                     <div>
                                         Power:{" "}
-                                        {device.power_status ? "ON" : "OFF"}
+                                        {device.power_status ? "AC" : "DC"}
                                     </div>
                                 </div>
                             </Popup>

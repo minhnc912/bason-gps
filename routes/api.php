@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\DeviceIngestController;
 use App\Http\Controllers\Api\LegacyDeviceIngestController;
 use App\Http\Controllers\Api\MapDeviceController;
 use App\Http\Controllers\Api\OpcenterController;
+use App\Http\Controllers\Api\Ticket\TicketController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\DeviceHistoryController;
 use Illuminate\Http\Request;
@@ -42,6 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/opcenters/{opcenter}', [OpcenterController::class, 'update']);
 
         Route::delete('/opcenters/{opcenter}', [OpcenterController::class, 'destroy']);
+
+        // Tickets
+        Route::post('/tickets', [TicketController::class, 'store']);
     });
 
     // Devices
@@ -73,4 +77,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // map
 
     Route::get('/map/devices', MapDeviceController::class);
+
+    // Tickets
+    Route::get('/tickets', [TicketController::class, 'index']);
 });

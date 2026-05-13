@@ -11,6 +11,9 @@ import { formatDuration } from "@/utils/date";
 import { ROUTES } from "@/constants/route";
 import PowerBadge from "@/components/pages/devices/PowerBadge";
 import AddressLink from "@/components/pages/devices/AddressLink";
+import DataTable from "@/components/common/table/DataTable";
+import TableLoading from "@/components/common/table/TableLoading";
+import TableEmptyState from "@/components/common/table/TableEmptyState";
 
 export default function DeviceHistoryPage() {
     const { id } = useParams();
@@ -152,31 +155,26 @@ export default function DeviceHistoryPage() {
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="min-w-full">
-                            <thead className="bg-[#4CAF50] text-white text-sm">
-                                <tr>
-                                    <th className="p-4 text-left">
-                                        Start Time
-                                    </th>
+                        <DataTable
+                            headers={[
+                                "Start Time",
+                                "End Time",
+                                "Duration",
+                                "Assignee",
+                                "Firmware",
+                                "Power",
+                                "Last Location",
+                            ]}
+                        >
+                            {loading && <TableLoading columns={7} />}
 
-                                    <th className="p-4 text-left">End Time</th>
+                            {!loading && histories.length === 0 && (
+                                <TableEmptyState />
+                            )}
 
-                                    <th className="p-4 text-left">Duration</th>
-
-                                    <th className="p-4 text-left">Assignee</th>
-
-                                    <th className="p-4 text-left">Firmware</th>
-
-                                    <th className="p-4 text-left">Power</th>
-
-                                    <th className="p-4 text-left">
-                                        Last Location
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {histories.map((history: DeviceHistory) => (
+                            {!loading &&
+                                histories.length > 0 &&
+                                histories.map((history: DeviceHistory) => (
                                     <tr
                                         key={history.id}
                                         className="border-t hover:bg-gray-50"
@@ -220,8 +218,7 @@ export default function DeviceHistoryPage() {
                                         </td>
                                     </tr>
                                 ))}
-                            </tbody>
-                        </table>
+                        </DataTable>
                     </div>
                 )}
             </div>

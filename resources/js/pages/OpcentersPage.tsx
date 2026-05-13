@@ -1,6 +1,5 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import Pagination from "@/components/common/Pagination";
 import {
     createOpcenter,
     deleteOpcenter,
@@ -15,6 +14,11 @@ import ConfirmModal from "@/components/common/ConfirmModal";
 import OpcenterTable from "@/components/pages/opcenter/OpcenterTable";
 import { UserRoleEnum } from "@/components/enums/user-role.enum";
 import { useAuthContext } from "@/app/providers/AuthProvider";
+import TablePagination from "@/components/common/table/TablePagination";
+import TableSearchInput from "@/components/common/table/TableSearchInput";
+import DataTable from "@/components/common/table/DataTable";
+import TableLoading from "@/components/common/table/TableLoading";
+import TableEmptyState from "@/components/common/table/TableEmptyState";
 
 export default function OpcentersPage() {
     const [page, setPage] = useState(1);
@@ -23,7 +27,7 @@ export default function OpcentersPage() {
     const [openDelete, setOpenDelete] = useState(false);
     const [selected, setSelected] = useState<Opcenter | null>(null);
     const debouncedSearch = useDebounce(search);
-    const { opcenters, pagination, refetch } = useOpcentersPage({
+    const { opcenters, pagination, loading, refetch } = useOpcentersPage({
         page,
         search: debouncedSearch,
     });
@@ -101,21 +105,25 @@ export default function OpcentersPage() {
                 )}
             </div>
 
-            <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search..."
-                className="w-full rounded-lg border px-4 py-2"
-            />
+            <TableSearchInput value={search} onChange={setSearch} />
+            <DataTable
+                headers={["ID", "Name", ...(isSuperUser ? ["Action"] : [])]}
+            >
+                {loading && <TableLoading columns={isSuperUser ? 3 : 2} />}
 
-            <OpcenterTable
-                isSuperUser={isSuperUser}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                opcenters={opcenters}
-            />
+                {!loading && opcenters.length === 0 && <TableEmptyState />}
 
-            <Pagination
+                {!loading && opcenters.length > 0 && (
+                    <OpcenterTable
+                        isSuperUser={isSuperUser}
+                        onDelete={handleDelete}
+                        onEdit={handleEdit}
+                        opcenters={opcenters}
+                    />
+                )}
+            </DataTable>
+
+            <TablePagination
                 currentPage={pagination.currentPage}
                 lastPage={pagination.lastPage}
                 onPageChange={setPage}

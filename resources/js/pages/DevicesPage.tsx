@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
     createDevice,
@@ -6,12 +6,9 @@ import {
     updateDevice,
 } from "@/services/device.service";
 
-import Pagination from "@/components/common/Pagination";
-
 import useDebounce from "@/hooks/useDebounce";
 
 import { Device } from "@/types/devices";
-import DeviceTableSkeleton from "@/components/pages/devices/DeviceTableSkeleton";
 import DeviceTable from "@/components/pages/devices/DeviceTable";
 import { UserRoleEnum } from "@/components/enums/user-role.enum";
 import { useDevices } from "@/hooks/useDevices";
@@ -22,6 +19,11 @@ import DeviceForm, {
 } from "@/components/pages/devices/DeviceForm";
 import Modal from "@/components/common/Modal";
 import ConfirmModal from "@/components/common/ConfirmModal";
+import DataTable from "@/components/common/table/DataTable";
+import TableLoading from "@/components/common/table/TableLoading";
+import TableEmptyState from "@/components/common/table/TableEmptyState";
+import TableSearchInput from "@/components/common/table/TableSearchInput";
+import TablePagination from "@/components/common/table/TablePagination";
 
 export default function DevicesPage() {
     const [page, setPage] = useState(1);
@@ -117,33 +119,41 @@ export default function DevicesPage() {
                 )}
             </div>
 
-            <div>
-                <input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search unit ID or serial..."
-                    className="w-full rounded-lg border px-4 py-2"
-                />
-            </div>
+            <TableSearchInput value={search} onChange={setSearch} />
+            <DataTable
+                headers={[
+                    "Unit ID",
+                    "Serial",
+                    "Tool Watch",
+                    "Power",
+                    "Start Time",
+                    "Last Report",
+                    "History",
+                    "Coordinate",
+                    "Address",
+                    "Note",
+                    ...(isSuperUser ? ["Actions"] : []),
+                ]}
+            >
+                {loading && <TableLoading columns={isSuperUser ? 11 : 10} />}
 
-            {loading ? (
-                <DeviceTableSkeleton />
-            ) : (
-                <>
+                {!loading && devices.length === 0 && <TableEmptyState />}
+
+                {!loading && devices.length > 0 && (
                     <DeviceTable
                         devices={devices}
                         isSuperUser={isSuperUser}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />
+                )}
+            </DataTable>
 
-                    <Pagination
-                        currentPage={pagination.currentPage}
-                        lastPage={pagination.lastPage}
-                        onPageChange={setPage}
-                    />
-                </>
-            )}
+            <TablePagination
+                currentPage={pagination.currentPage}
+                lastPage={pagination.lastPage}
+                onPageChange={setPage}
+            />
 
             <Modal
                 open={openModal}

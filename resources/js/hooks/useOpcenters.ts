@@ -15,7 +15,6 @@ export function useOpcenters() {
                 setLoading(true);
 
                 const res = await getOpcenterOptions();
-                console.log(res.data);
 
                 setOpCenters(res.data);
             } finally {

@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\Device;
+use App\Models\DeviceHistory;
 use App\Models\DeviceState;
 use App\Models\Opcenter;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -27,9 +29,11 @@ class ImportLegacyDataCommand extends Command
 
         // $this->importDeviceStates();
 
+        $this->importDeviceHistories();
+
         // $this->importUsers();
 
-        $this->assignRoles();
+        // $this->assignRoles();
 
         $this->info('Legacy import completed.');
     }
@@ -47,7 +51,7 @@ class ImportLegacyDataCommand extends Command
 
     private function importDevices(): void
     {
-        $devices = DB::connection('legacy_mysql')->table('devices')->get();
+        $devices = DB::connection('legacy_mysql')->table('devices')->limit(200)->get();
 
         $groupMap = DB::connection('legacy_mysql')->table('grouptodevices')->get()->keyBy('deviceId');
 
@@ -63,7 +67,6 @@ class ImportLegacyDataCommand extends Command
             if (!$opcenter) {
                 continue;
             }
-       $this->info(json_encode($legacyDevice));
             Device::create([
                 'unit_id' => $legacyDevice->unitID,
                 'serial' => $legacyDevice->serial,
@@ -116,12 +119,16 @@ class ImportLegacyDataCommand extends Command
         $users = DB::connection('legacy_mysql')->table('users')->get();
 
         foreach ($users as $legacyUser) {
-            User::create([
-                'name' => $legacyUser->name,
-                'email' => $legacyUser->email,
-                'password' => $legacyUser->password,
-                'legacy_user_id' => $legacyUser->id,
-            ]);
+            User::updateOrCreate(
+                [
+                    'email' => $legacyUser->email,
+                ],
+                [
+                    'name' => $legacyUser->name,
+                    'password' => $legacyUser->password,
+                    'legacy_user_id' => $legacyUser->id,
+                ],
+            );
         }
     }
 
@@ -140,5 +147,66 @@ class ImportLegacyDataCommand extends Command
 
             $user->assignRole($role);
         }
+    }
+
+    private function importDeviceHistories(): void
+    {
+        $this->info('Importing device histories...');
+
+        $deviceMap = Device::pluck('id', 'unit_id');
+
+        $histories = DB::connection('legacy_mysql')->table('histories')->whereNotNull('latitude')->whereNotNull('longtitude')->orderByDesc('id')->limit(200)->get();
+
+        $insertData = [];
+
+        foreach ($histories as $history) {
+            $deviceId = $deviceMap[$history->deviceID] ?? null;
+
+            if (!$deviceId) {
+                continue;
+            }
+
+            if (abs($history->latitude) < 0.001 && abs($history->longtitude) < 0.001) {
+                continue;
+            }
+
+            $startedAt = $history->sTime ? Carbon::createFromTimestamp((int) $history->sTime) : now();
+
+            $endedAt = $history->eTime ? Carbon::createFromTimestamp((int) $history->eTime) : $startedAt;
+
+            $insertData[] = [
+                'device_id' => $deviceId,
+
+                'latitude' => $history->latitude,
+
+                'longitude' => $history->longtitude,
+
+                'power_status' => $history->powerStatus ?? 0,
+
+                'temperature' => null,
+
+                'tool_watch' => $history->toolWatch,
+
+                'address' => $history->address,
+
+                'started_at' => $startedAt,
+
+                'ended_at' => $endedAt,
+
+                'duration_seconds' => max(0, (int) $history->eTime - (int) $history->sTime),
+
+                'operator' => $history->operator,
+
+                'firmware_version' => $history->firmwareVersion,
+
+                'created_at' => now(),
+
+                'updated_at' => now(),
+            ];
+        }
+
+        DeviceHistory::insert($insertData);
+
+        $this->info('Device histories imported.');
     }
 }

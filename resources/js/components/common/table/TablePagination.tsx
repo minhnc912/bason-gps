@@ -8,7 +8,7 @@ interface Props {
     onPageChange: (page: number) => void;
 }
 
-export default function Pagination({
+export default function TablePagination({
     currentPage,
     lastPage,
     onPageChange,
