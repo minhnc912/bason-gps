@@ -34,4 +34,8 @@ export const PRIVATE_NAV_ITEMS: NavigationItem[] = [
         label: "Map",
         path: ROUTES.Map,
     },
+    {
+        label: "Tickets",
+        path: ROUTES.Tickets,
+    },
 ];

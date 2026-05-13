@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     protected $fillable = [
+        'legacy_ticket_id',
         'opcenter_id',
         'device_id',
         'created_by',

@@ -12,6 +12,7 @@ import SelectOpcenterPage from "@/pages/SelectOpcenterPage";
 import UsersPage from "@/pages/UsersPage";
 import OpcentersPage from "@/pages/OpcentersPage";
 import MapPage from "@/pages/MapPage";
+import TicketsPage from "@/pages/TicketsPage";
 
 export default function AppRouter() {
     return (
@@ -85,6 +86,15 @@ export default function AppRouter() {
                         element={
                             <ProtectedRoute>
                                 <MapPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path={ROUTES.Tickets}
+                        element={
+                            <ProtectedRoute>
+                                <TicketsPage />
                             </ProtectedRoute>
                         }
                     />

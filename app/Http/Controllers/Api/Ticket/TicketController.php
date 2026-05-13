@@ -12,7 +12,7 @@ class TicketController extends Controller
 {
     public function index(Request $request, GetTicketsAction $getTicketsAction)
     {
-        $tickets = $getTicketsAction->execute($request->integer('opcenter_id'));
+        $tickets = $getTicketsAction->execute($request);
 
         return response()->json($tickets);
     }

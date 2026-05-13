@@ -6,6 +6,7 @@ use App\Models\Device;
 use App\Models\DeviceHistory;
 use App\Models\DeviceState;
 use App\Models\Opcenter;
+use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
@@ -30,6 +31,8 @@ class ImportLegacyDataCommand extends Command
         // $this->importDeviceStates();
 
         $this->importDeviceHistories();
+
+        $this->importTickets();
 
         // $this->importUsers();
 
@@ -208,5 +211,66 @@ class ImportLegacyDataCommand extends Command
         DeviceHistory::insert($insertData);
 
         $this->info('Device histories imported.');
+    }
+
+    private function importTickets(): void
+    {
+        $this->info('Importing tickets...');
+
+        $tickets = DB::connection('legacy_mysql')->table('tickets')->get();
+
+        $opcenterMap = Opcenter::pluck('id', 'legacy_group_id');
+
+        $deviceMap = Device::pluck('id', 'unit_id');
+
+        $insertData = [];
+
+        foreach ($tickets as $ticket) {
+            $opcenterId = $opcenterMap[$ticket->groupId] ?? null;
+
+            $deviceId = $deviceMap[$ticket->unitID] ?? null;
+
+            if (!$opcenterId) {
+                $this->warn("Skip ticket {$ticket->id}: missing opcenter");
+                continue;
+            }
+
+            if (!$deviceId) {
+                $this->warn("Skip ticket {$ticket->id}: missing device");
+                continue;
+            }
+
+            $insertData[] = [
+                'legacy_ticket_id' => $ticket->id,
+
+                'opcenter_id' => $opcenterId,
+
+                'device_id' => $deviceId,
+
+                'created_by' => 1,
+
+                'unit_id' => $ticket->unitID,
+
+                'truck_number' => $ticket->truckNumber,
+
+                'meter_number' => $ticket->meterNumber,
+
+                'address' => $ticket->address,
+
+                'action' => $ticket->action,
+
+                'latitude' => is_numeric($ticket->latitude) ? (float) $ticket->latitude : null,
+
+                'longitude' => is_numeric($ticket->longitude) ? (float) $ticket->longitude : null,
+
+                'created_at' => $ticket->created_at ?? now(),
+
+                'updated_at' => $ticket->updated_at ?? now(),
+            ];
+        }
+
+        Ticket::insert($insertData);
+
+        $this->info('Tickets imported.');
     }
 }
