@@ -8,7 +8,7 @@ import { useAuthContext } from "@/app/providers/AuthProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormField } from "@/components/common/FormField";
-import logo from "@/assets/img/duke-energy.png";
+import logo from "@/assets/img/bacson-logo.png";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/route";
 import { UserRoleEnum } from "@/components/enums/user-role.enum";
@@ -39,7 +39,7 @@ export default function LoginPage() {
             const user = res.user;
 
             if (user.role === UserRoleEnum.SUPERUSER) {
-                navigate(ROUTES.HOME);
+                navigate(ROUTES.DEVICES);
             } else {
                 navigate(ROUTES.SELECT_OPCENTER);
             }

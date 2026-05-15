@@ -1,58 +1,899 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BacSon GPS Monitoring System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+BacSon GPS is a realtime GPS monitoring and device management platform built with:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Backend: Laravel API
+- Frontend: React + TypeScript + Vite
+- Database: MySQL
+- Maps: Leaflet + OpenStreetMap
+- Authentication: Laravel Sanctum
+- Roles & Permissions: Spatie Laravel Permission
+- Deployment: Railway / VPS / Shared Hosting compatible
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The system supports:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Realtime GPS device tracking
+- Device state polling
+- Device history tracking
+- Ticket management
+- User roles and permissions
+- Opcenter management
+- Legacy database migration
+- Responsive dashboard UI
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Tech Stack
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Backend
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- PHP 8.2+
+- Laravel 12
+- MySQL 8+
+- Laravel Sanctum
+- Spatie Permission
 
-## Agentic Development
+## Frontend
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- React
+- TypeScript
+- Vite
+- TailwindCSS
+- React Leaflet
+- Axios
 
-```bash
-composer require laravel/boost --dev
+## Infrastructure
 
-php artisan boost:install
+- Railway
+- Nginx / Apache
+- Node.js 20+
+- Composer 2+
+
+---
+
+# Project Structure
+
+## Backend Structure
+
+```txt
+app/
+├── Console/
+│   └── Commands/
+│       └── ImportLegacyDataCommand.php
+│
+├── Http/
+│   ├── Controllers/
+│   │   ├── Auth/
+│   │   ├── Devices/
+│   │   ├── Tickets/
+│   │   ├── Maps/
+│   │   └── PostData/
+│   │
+│   ├── Requests/
+│   └── Resources/
+│
+├── Models/
+│   ├── Device.php
+│   ├── DeviceState.php
+│   ├── DeviceHistory.php
+│   ├── Ticket.php
+│   ├── Opcenter.php
+│   └── User.php
+│
+├── Services/
+│   └── Geocoding/
+│
+└── Providers/
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## Frontend Structure
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```txt
+src/
+├── app/
+│   ├── providers/
+│   └── router/
+│
+├── components/
+│   ├── common/
+│   ├── layout/
+│   ├── maps/
+│   ├── pages/
+│   └── ui/
+│
+├── hooks/
+├── pages/
+├── services/
+├── types/
+├── constants/
+└── utils/
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Main Features
 
-## Security Vulnerabilities
+## Authentication
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Login
+- Logout
+- Protected routes
+- Role-based authorization
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Devices
+
+- Update device
+- Delete device
+- Search devices
+- Pagination
+- Realtime device states
+- Device history
+
+---
+
+## Realtime GPS Map
+
+- Realtime polling
+- Leaflet map integration
+- Device popup info
+- Device sidebar list
+- Device search
+- Current user centered map
+
+---
+
+## Tickets
+
+- Create tickets
+- Ticket table
+- Device selection
+- Truck number
+- Meter number
+- GPS coordinates
+- Ticket actions
+
+---
+
+## Legacy Data Migration
+
+Migration supports:
+
+- Users
+- Devices
+- Device states
+- Device histories
+- Opcenters
+- Tickets
+
+---
+
+# Database Schema Overview
+
+## Main Tables
+
+### users
+
+Stores application users.
+
+### roles
+
+Spatie permission roles.
+
+### devices
+
+Stores master device information.
+
+### device_states
+
+Stores latest realtime device state.
+
+### device_histories
+
+Stores historical GPS sessions.
+
+### tickets
+
+Stores field tickets.
+
+### opcenters
+
+Stores operation centers/groups.
+
+---
+
+# Local Development Setup
+
+## 1. Clone Repository
+
+```bash
+git clone <your-repository-url>
+```
+
+```bash
+cd bacson-gps
+```
+
+---
+
+# Backend Setup
+
+## 2. Install PHP Dependencies
+
+```bash
+composer install
+```
+
+---
+
+## 3. Create Environment File
+
+```bash
+cp .env.example .env
+```
+
+---
+
+## 4. Generate App Key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+## 5. Configure Database
+
+Update `.env`:
+
+```env
+APP_NAME=BacSonGPS
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=bacson_gps
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+## 6. Run Migrations
+
+```bash
+php artisan migrate
+```
+
+---
+
+## 7. Seed Roles
+
+Example:
+
+```bash
+php artisan db:seed
+```
+
+or custom role seeder:
+
+```bash
+php artisan db:seed --class=RoleSeeder
+```
+
+---
+
+## 8. Start Laravel Server
+
+```bash
+php artisan serve
+```
+
+Backend URL:
+
+```txt
+http://127.0.0.1:8000
+```
+
+---
+
+# Frontend Setup
+
+## 9. Install Node Modules
+
+```bash
+npm install
+```
+
+---
+
+## 10. Configure Frontend Environment
+
+Create `.env`:
+
+```env
+VITE_API_URL="/api"
+```
+
+---
+
+## 11. Start Frontend
+
+```bash
+npm run dev
+```
+
+Frontend URL:
+
+```txt
+http://localhost:5173
+```
+
+---
+
+# Realtime GPS Post Data API
+
+The system receives GPS data using:
+
+```txt
+GET /api/postdata
+```
+
+Example:
+
+```txt
+https://your-domain.com/api/postdata?uid=GPS001&fwv=1.0.2&coord=16.047079,108.206230&temp=55&pwr=1&t=RUNNING&sim=1
+```
+
+---
+
+## Example Using curl
+
+```bash
+curl "https://your-domain.com/api/postdata?uid=GPS001&fwv=1.0.2&coord=16.047079,108.206230&temp=55&pwr=1&t=RUNNING&sim=1"
+```
+
+---
+
+## Example Using wget
+
+```bash
+wget -t 1 "https://your-domain.com/api/postdata?uid=GPS001&fwv=1.0.2&coord=16.047079,108.206230&temp=55&pwr=1&t=RUNNING&sim=1"
+```
+
+---
+
+# Device Polling System
+
+Frontend automatically polls:
+
+- Device states
+- Map devices
+- Histories
+
+Polling interval is configurable in:
+
+```txt
+src/constants/config.ts
+```
+
+---
+
+# Leaflet Map Setup
+
+The project uses:
+
+- React Leaflet
+- OpenStreetMap
+
+Install:
+
+```bash
+npm install leaflet react-leaflet
+```
+
+Import CSS:
+
+```ts
+import "leaflet/dist/leaflet.css";
+```
+
+---
+
+# Legacy Database Migration
+
+## Configure Legacy Database
+
+Add to `.env`:
+
+```env
+LEGACY_DB_HOST=127.0.0.1
+LEGACY_DB_PORT=3306
+LEGACY_DB_DATABASE=legacy_database
+LEGACY_DB_USERNAME=root
+LEGACY_DB_PASSWORD=
+```
+
+---
+
+## Configure database.php
+
+```php
+'legacy_mysql' => [
+    'driver' => 'mysql',
+    'host' => env('LEGACY_DB_HOST'),
+    'port' => env('LEGACY_DB_PORT'),
+    'database' => env('LEGACY_DB_DATABASE'),
+    'username' => env('LEGACY_DB_USERNAME'),
+    'password' => env('LEGACY_DB_PASSWORD'),
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    'strict' => true,
+    'engine' => null,
+],
+```
+
+---
+
+## Run Migration Command
+
+```bash
+php artisan app:import-legacy-data-command
+```
+
+---
+
+## Migration Includes
+
+- Import opcenters
+- Import devices
+- Import device states
+- Import device histories
+- Import users
+- Import tickets
+- Assign roles
+
+---
+
+# Production Deployment
+
+The project can be deployed to:
+
+- Railway
+- VPS
+- Ubuntu Server
+- DigitalOcean
+- AWS EC2
+- Shared Hosting
+- Docker
+
+---
+
+# Railway Deployment
+
+## 1. Install Railway CLI
+
+Official website:
+
+url Railway CLI Documentation [https://docs.railway.com/guides/cli](https://docs.railway.com/guides/cli)
+
+Install:
+
+```bash
+npm install -g @railway/cli
+```
+
+---
+
+## 2. Login
+
+```bash
+railway login
+```
+
+---
+
+## 3. Link Existing Project
+
+```bash
+railway link
+```
+
+Select:
+
+- Workspace
+- Project
+- Environment
+- Service
+
+---
+
+## 4. Configure Variables
+
+Add environment variables in Railway dashboard.
+
+Required:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.com
+
+DB_CONNECTION=mysql
+DB_HOST=
+DB_PORT=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+```
+
+---
+
+## 5. Deploy
+
+Railway automatically deploys after:
+
+```bash
+git push
+```
+
+---
+
+## 6. Run Migrations On Production
+
+Open shell:
+
+```bash
+railway shell
+```
+
+Run:
+
+```bash
+php artisan migrate --force
+```
+
+---
+
+## 7. Generate App Key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+# VPS Deployment
+
+## Recommended Stack
+
+- Ubuntu 22+
+- Nginx
+- PHP-FPM
+- MySQL
+- Node.js
+- Supervisor
+
+---
+
+## Install PHP
+
+```bash
+sudo apt install php php-fpm php-mysql php-mbstring php-xml php-curl unzip
+```
+
+---
+
+## Install Composer
+
+```bash
+curl -sS https://getcomposer.org/installer | php
+```
+
+---
+
+## Install Node.js
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+```
+
+```bash
+sudo apt install -y nodejs
+```
+
+---
+
+## Clone Project
+
+```bash
+git clone <repository>
+```
+
+---
+
+## Install Dependencies
+
+```bash
+composer install --optimize-autoloader --no-dev
+```
+
+```bash
+npm install
+```
+
+```bash
+npm run build
+```
+
+---
+
+## Configure Permissions
+
+```bash
+sudo chmod -R 775 storage
+```
+
+```bash
+sudo chmod -R 775 bootstrap/cache
+```
+
+---
+
+## Configure Nginx
+
+Example:
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    root /var/www/bacson-gps/public;
+
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+    }
+}
+```
+
+---
+
+## Restart Services
+
+```bash
+sudo systemctl restart nginx
+```
+
+```bash
+sudo systemctl restart php8.2-fpm
+```
+
+---
+
+# Shared Hosting Deployment
+
+## Requirements
+
+- PHP 8.2+
+- MySQL
+- SSH access recommended
+
+---
+
+## Steps
+
+1. Upload project files
+2. Upload `.env`
+3. Run composer install
+4. Configure database
+5. Point public folder to `/public`
+6. Run migrations
+7. Build frontend assets
+
+---
+
+# Production Optimization
+
+## Cache Config
+
+```bash
+php artisan config:cache
+```
+
+```bash
+php artisan route:cache
+```
+
+```bash
+php artisan view:cache
+```
+
+---
+
+## Queue Worker
+
+```bash
+php artisan queue:work
+```
+
+---
+
+## Scheduler
+
+Crontab:
+
+```bash
+* * * * * php /path-to-project/artisan schedule:run >> /dev/null 2>&1
+```
+
+---
+
+# Common Commands
+
+## Clear Cache
+
+```bash
+php artisan optimize:clear
+```
+
+---
+
+## Fresh Migration
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+---
+
+## Run Tests
+
+```bash
+php artisan test
+```
+
+---
+
+# Troubleshooting
+
+## 502 Bad Gateway
+
+Check:
+
+- PHP-FPM running
+- Correct Nginx config
+- Railway service health
+- APP_KEY exists
+
+---
+
+## Database Connection Refused
+
+Check:
+
+- DB credentials
+- Database host
+- Database port
+- Railway variables
+
+---
+
+## CORS Errors
+
+Configure Laravel CORS.
+
+Check:
+
+```txt
+config/cors.php
+```
+
+---
+
+## React Leaflet Errors
+
+Install:
+
+```bash
+npm install leaflet react-leaflet
+```
+
+Import CSS:
+
+```ts
+import "leaflet/dist/leaflet.css";
+```
+
+---
+
+## Permission Errors
+
+```bash
+chmod -R 775 storage
+```
+
+```bash
+chmod -R 775 bootstrap/cache
+```
+
+---
+
+# Recommended Production Flow
+
+## Development
+
+```txt
+Local Development
+    ↓
+Git Commit
+    ↓
+Push Github
+    ↓
+Railway Auto Deploy
+```
+
+---
+
+## Production Migration Flow
+
+```txt
+Backup Database
+    ↓
+Clear Production Data
+    ↓
+Import Production SQL
+    ↓
+Run Laravel Migrations
+    ↓
+Verify Data
+    ↓
+Test GPS API
+```
+
+---
+
+# Future Improvements
+
+Possible future upgrades:
+
+- WebSocket realtime updates
+- Redis caching
+- Queue-based GPS processing
+- Notifications
+- Device alerts
+- Multi-tenant support
+- Export reports
+- Advanced analytics
+- Mobile application
+
+---
+
+# License
+
+Private internal project.
+
+---
+
+# Author
+
+BacSon GPS Monitoring System
+
+Built with Laravel + React + TypeScript.

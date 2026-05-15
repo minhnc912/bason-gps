@@ -51,13 +51,13 @@ export default function UsersPage() {
                     users.length > 0 &&
                     users.map((user) => (
                         <tr key={user.id} className="border-t">
-                            <td className="px-4 py-3">{user.name}</td>
+                            <td className="px-1">{user.name}</td>
 
-                            <td className="px-4 py-3">{user.email}</td>
+                            <td className="px-1">{user.email}</td>
 
-                            <td className="px-4 py-3">{user.role}</td>
+                            <td className="px-1">{user.role}</td>
 
-                            <td className="px-4 py-3">
+                            <td className="p-1">
                                 <select
                                     value={user.role ?? ""}
                                     onChange={(e) =>
@@ -70,7 +70,7 @@ export default function UsersPage() {
                                         user.name === UserRoleEnum.SUPERADMIN
                                     }
                                     className={clsx(
-                                        "rounded-lg border px-3 py-2 ",
+                                        "rounded-lg border p-1 ",
                                         user.name === UserRoleEnum.SUPERADMIN
                                             ? "bg-gray-300 cursor-not-allowed"
                                             : "cursor-pointer",

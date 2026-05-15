@@ -13,7 +13,7 @@ export default function DataTable({ headers, children }: Props) {
                         {headers.map((header) => (
                             <th
                                 key={header}
-                                className="px-4 py-3 text-left text-white text-smfont-semibold "
+                                className="p-2 text-left text-white text-smfont-semibold "
                             >
                                 {header}
                             </th>

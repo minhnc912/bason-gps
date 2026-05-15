@@ -12,12 +12,12 @@ function OpcenterTable({ opcenters, isSuperUser, onEdit, onDelete }: Props) {
         <>
             {opcenters.map((opcenter) => (
                 <tr key={opcenter.id} className="border-t">
-                    <td className="px-4 py-3">{opcenter.id}</td>
+                    <td className="px-1">{opcenter.id}</td>
 
-                    <td className="px-4 py-3">{opcenter.name}</td>
+                    <td className="px-1">{opcenter.name}</td>
 
                     {isSuperUser && (
-                        <td className="p-4">
+                        <td className="p-1">
                             <div className="flex gap-2">
                                 <button
                                     className="rounded-lg border px-3 py-1 text-sm hover:bg-gray-100 cursor-pointer"

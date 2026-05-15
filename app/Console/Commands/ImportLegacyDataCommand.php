@@ -24,19 +24,19 @@ class ImportLegacyDataCommand extends Command
 
     public function handle(): void
     {
-        // $this->importOpcenters();
+        $this->importOpcenters();
 
-        // $this->importDevices();
+        $this->importDevices();
 
-        // $this->importDeviceStates();
+        $this->importDeviceStates();
 
         $this->importDeviceHistories();
 
         $this->importTickets();
 
-        // $this->importUsers();
+        $this->importUsers();
 
-        // $this->assignRoles();
+        $this->assignRoles();
 
         $this->info('Legacy import completed.');
     }
@@ -70,6 +70,7 @@ class ImportLegacyDataCommand extends Command
             if (!$opcenter) {
                 continue;
             }
+
             Device::create([
                 'unit_id' => $legacyDevice->unitID,
                 'serial' => $legacyDevice->serial,
@@ -158,10 +159,10 @@ class ImportLegacyDataCommand extends Command
 
         $deviceMap = Device::pluck('id', 'unit_id');
 
-        $histories = DB::connection('legacy_mysql')->table('histories')->whereNotNull('latitude')->whereNotNull('longtitude')->orderByDesc('id')->limit(200)->get();
+        $histories = DB::connection('legacy_mysql')->table('histories')->whereNotNull('latitude')->whereNotNull('longtitude')->orderByDesc('id')->limit(500)->get();
 
         $insertData = [];
-
+  $this->info(json_encode($histories));
         foreach ($histories as $history) {
             $deviceId = $deviceMap[$history->deviceID] ?? null;
 
@@ -207,6 +208,8 @@ class ImportLegacyDataCommand extends Command
                 'updated_at' => now(),
             ];
         }
+
+
 
         DeviceHistory::insert($insertData);
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Device extends Model
 {
-    protected $fillable = ['unit_id', 'serial', 'opcenter_id', 'legacy_device_id'];
+    protected $fillable = ['unit_id', 'serial', 'opcenter_id', 'note', 'legacy_device_id'];
 
     protected $with = ['state'];
 

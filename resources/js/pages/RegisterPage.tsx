@@ -7,7 +7,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-import logo from "@/assets/img/duke-energy.png";
+import logo from "@/assets/img/bacson-logo.png";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/route";
 

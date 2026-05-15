@@ -27,17 +27,17 @@ export default function DeviceTable({
 
                 return (
                     <tr key={device.id} className="border-t hover:bg-gray-50">
-                        <td className="p-4 font-medium">{device.unit_id}</td>
+                        <td className="px-1 font-medium">{device.unit_id}</td>
 
-                        <td className="p-4">{device.serial ?? "-"}</td>
+                        <td className="px-1">{device.serial ?? "-"}</td>
 
-                        <td className="p-4">{state?.tool_watch ?? "-"}</td>
+                        <td className="px-1">{state?.tool_watch ?? "-"}</td>
 
-                        <td className="p-4">
+                        <td className="px-1">
                             <PowerBadge power={state?.power_status} />
                         </td>
 
-                        <td className="p-4 text-sm">
+                        <td className="px-1 text-sm">
                             {state?.session_started_at
                                 ? new Date(
                                       state.session_started_at,
@@ -45,7 +45,7 @@ export default function DeviceTable({
                                 : "-"}
                         </td>
 
-                        <td className="p-4 text-sm text-gray-600">
+                        <td className="px-1 text-sm text-gray-600">
                             {state?.last_report_at
                                 ? new Date(
                                       state.last_report_at,
@@ -53,16 +53,16 @@ export default function DeviceTable({
                                 : "-"}
                         </td>
 
-                        <td className="p-4">
+                        <td className="px-1 flex justify-center">
                             <Link
                                 to={`/devices/${device.id}/history`}
-                                className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-3 py-2 hover:bg-gray-100"
+                                className="inline-flex items-center justify-center rounded-lg border border-gray-300 p-2 hover:bg-gray-100"
                             >
-                                <EyeIcon />
+                                <EyeIcon size={16} />
                             </Link>
                         </td>
 
-                        <td className="p-4 text-sm">
+                        <td className="px-1 text-sm">
                             {isApproximateLocation(
                                 state?.latitude,
                                 state?.longitude,
@@ -78,7 +78,7 @@ export default function DeviceTable({
                             )}
                         </td>
 
-                        <td className="max-w-xs truncate p-4 text-sm">
+                        <td className="max-w-xs truncate px-1 text-sm">
                             {state?.address ? (
                                 <AddressLink address={state.address} />
                             ) : (
@@ -86,12 +86,12 @@ export default function DeviceTable({
                             )}
                         </td>
 
-                        <td className="p-4 text-sm text-gray-600">
+                        <td className="px-1 text-sm text-gray-600">
                             {device.note ?? "-"}
                         </td>
 
                         {isSuperUser && (
-                            <td className="p-4">
+                            <td className="px-1">
                                 <div className="flex gap-2">
                                     <button
                                         className="rounded-lg border px-3 py-1 text-sm hover:bg-gray-100 cursor-pointer"

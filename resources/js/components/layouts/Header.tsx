@@ -1,7 +1,7 @@
 import { ROUTES } from "@/constants/route";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "@/assets/img/duke-energy.png";
+import logo from "@/assets/img/bacson-logo.png";
 import { Button } from "../common/Button";
 import { useAuth } from "@/hooks/useAuth";
 import NavLinks from "./NavLinks";

@@ -99,7 +99,7 @@ export default function DevicesPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            {/* <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                     <h1 className="text-2xl font-bold">Devices</h1>
 
@@ -117,7 +117,7 @@ export default function DevicesPage() {
                         Add Device
                     </button>
                 )}
-            </div>
+            </div> */}
 
             <TableSearchInput value={search} onChange={setSearch} />
             <DataTable

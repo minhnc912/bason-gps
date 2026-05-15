@@ -130,7 +130,7 @@ export default function DeviceHistoryPage() {
                                 Address
                             </p>
 
-                            <div className="rounded-xl border bg-gray-50 p-4 text-sm">
+                            <div className="rounded-xl border bg-gray-50 p-2 text-sm">
                                 <AddressLink address={currentSession.address} />
                             </div>
                         </div>
@@ -179,29 +179,29 @@ export default function DeviceHistoryPage() {
                                         key={history.id}
                                         className="border-t hover:bg-gray-50"
                                     >
-                                        <td className="p-4 text-sm">
+                                        <td className="p-2 text-sm">
                                             {new Date(
                                                 history.started_at,
                                             ).toLocaleString()}
                                         </td>
 
-                                        <td className="p-4 text-sm">
+                                        <td className="p-2 text-sm">
                                             {new Date(
                                                 history.ended_at,
                                             ).toLocaleString()}
                                         </td>
 
-                                        <td className="p-4 text-sm">
+                                        <td className="p-2 text-sm">
                                             {formatDuration(
                                                 history.duration_seconds,
                                             )}
                                         </td>
 
-                                        <td className="p-4 text-sm">
+                                        <td className="p-2 text-sm">
                                             {history.operator ?? "-"}
                                         </td>
 
-                                        <td className="p-4 text-sm">
+                                        <td className="p-2 text-sm">
                                             {history.firmware_version ?? "-"}
                                         </td>
 
@@ -211,7 +211,7 @@ export default function DeviceHistoryPage() {
                                             />
                                         </td>
 
-                                        <td className="max-w-xs p-4 text-sm">
+                                        <td className="max-w-xs p-2 text-sm">
                                             <AddressLink
                                                 address={history.address}
                                             />
@@ -237,7 +237,7 @@ function SessionInfoCard({ label, value }: SessionInfoCardProps) {
         <div>
             <p className="mb-1 text-sm text-gray-500">{label}</p>
 
-            <div className="rounded-xl border bg-gray-50 p-4 text-sm font-medium">
+            <div className="rounded-xl border bg-gray-50 p-2 text-sm font-medium">
                 {value}
             </div>
         </div>

@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum PaginationEnum: int
 {
-    case DEFAULT_PER_PAGE = 10;
+    case DEFAULT_PER_PAGE = 15;
 
     public function label(): string
     {
