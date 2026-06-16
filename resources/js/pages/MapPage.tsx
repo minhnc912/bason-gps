@@ -1,11 +1,7 @@
-import { useMemo, useRef, useState } from "react";
-
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-
+import { useEffect, useMemo, useRef, useState } from "react";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import type { Map as LeafletMap } from "leaflet";
-
 import L from "leaflet";
-
 import { useMapDevices } from "@/hooks/useMapDevices";
 import useDebounce from "@/hooks/useDebounce";
 
@@ -14,11 +10,41 @@ delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl:
         "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-
     iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-
     shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
+
+function ChangeMapView({ devices }: { devices: any[] }) {
+    const map = useMap();
+
+    const previousDevicesKeyRef = useRef<string>("");
+
+    useEffect(() => {
+        if (devices.length === 0) return;
+
+        const currentDevicesKey = devices.map((d) => d.id).sort().join(",");
+
+        if (currentDevicesKey !== previousDevicesKeyRef.current) {
+
+            const bounds = L.latLngBounds(
+                devices.map((device) => [
+                    Number(device.latitude),
+                    Number(device.longitude),
+                ])
+            );
+
+            map.fitBounds(bounds, {
+                padding: [50, 50],
+                maxZoom: 15,
+                animate: true,
+            });
+
+            previousDevicesKeyRef.current = currentDevicesKey;
+        }
+    }, [devices, map]);
+
+    return null;
+}
 
 export default function MapPage() {
     const [search, setSearch] = useState("");
@@ -33,21 +59,8 @@ export default function MapPage() {
         return devices.filter((device) => device.latitude && device.longitude);
     }, [devices]);
 
-    const defaultCenter = useMemo(() => {
-        if (validDevices.length > 0) {
-            return [
-                Number(validDevices[0].latitude),
-                Number(validDevices[0].longitude),
-            ] as [number, number];
-        }
-
-        return [16.047079, 108.20623] as [number, number];
-    }, [validDevices]);
-
     const handleFocusDevice = (latitude: number, longitude: number) => {
-        if (!mapRef.current) {
-            return;
-        }
+        if (!mapRef.current) return;
 
         mapRef.current.flyTo([latitude, longitude], 16, {
             duration: 1.5,
@@ -103,7 +116,6 @@ export default function MapPage() {
 
             <div className="flex-1">
                 <MapContainer
-                    center={defaultCenter}
                     zoom={13}
                     className="h-full w-full"
                     ref={mapRef}
@@ -112,6 +124,8 @@ export default function MapPage() {
                         attribution="&copy; OpenStreetMap"
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
+
+                    <ChangeMapView devices={validDevices} />
 
                     {validDevices.map((device) => (
                         <Marker

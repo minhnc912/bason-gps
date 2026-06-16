@@ -105,9 +105,13 @@ export default function OpcentersPage() {
                 )}
             </div>
 
-            <TableSearchInput value={search} onChange={setSearch} />
+            {/* <TableSearchInput value={search} onChange={setSearch} /> */}
             <DataTable
-                headers={["ID", "Name", ...(isSuperUser ? ["Action"] : [])]}
+                headers={[
+                    "ID",
+                    "Name",
+                    // ...(isSuperUser ? ["Actions"] : [])
+                ]}
             >
                 {loading && <TableLoading columns={isSuperUser ? 3 : 2} />}
 

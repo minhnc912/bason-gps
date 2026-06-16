@@ -90,7 +90,7 @@ export default function DeviceTable({
                             {device.note ?? "-"}
                         </td>
 
-                        {isSuperUser && (
+                        {/* {isSuperUser && (
                             <td className="px-1">
                                 <div className="flex gap-2">
                                     <button
@@ -108,7 +108,7 @@ export default function DeviceTable({
                                     </button>
                                 </div>
                             </td>
-                        )}
+                        )} */}
                     </tr>
                 );
             })}

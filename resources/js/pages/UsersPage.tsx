@@ -41,7 +41,7 @@ export default function UsersPage() {
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-bold">Users</h1>
             </div>
-            <TableSearchInput value={search} onChange={setSearch} />
+            {/* <TableSearchInput value={search} onChange={setSearch} /> */}
             <DataTable headers={["Name", "Email", "Role", "Action"]}>
                 {loading && <TableLoading columns={4} />}
 

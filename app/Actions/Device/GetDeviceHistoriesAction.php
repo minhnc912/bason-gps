@@ -38,6 +38,8 @@ class GetDeviceHistoriesAction
                 'firmware_version' =>
                     $state->firmware_version,
 
+                    'sim_id' => $state->sim_id,
+
                 'power_status' =>
                     $state->power_status,
 

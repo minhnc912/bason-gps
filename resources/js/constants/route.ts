@@ -8,6 +8,7 @@ export const ROUTES = {
     OPCENTERS: "/opcenters",
     Map: "/map",
     Tickets: "/tickets",
+    POSTDATA: '/tools/postdata',
 
     // dynamic
     DEVICE_HISTORIES: `/devices/:id/history`,

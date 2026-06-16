@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeviceState extends Model
 {
-    protected $fillable = ['device_id', 'latitude', 'longitude', 'power_status', 'temperature', 'tool_watch', 'firmware_version', 'address', 'operator', 'session_started_at', 'last_report_at'];
+    protected $fillable = ['device_id', 'latitude', 'longitude', 'power_status', 'temperature', 'tool_watch', 'firmware_version', 'sim_id', 'address', 'operator', 'session_started_at', 'last_report_at'];
 
     protected $casts = [
         'power_status' => 'boolean',

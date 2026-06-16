@@ -119,7 +119,7 @@ export default function DevicesPage() {
                 )}
             </div> */}
 
-            <TableSearchInput value={search} onChange={setSearch} />
+            {/* <TableSearchInput value={search} onChange={setSearch} /> */}
             <DataTable
                 headers={[
                     "Unit ID",
@@ -132,7 +132,7 @@ export default function DevicesPage() {
                     "Coordinate",
                     "Address",
                     "Note",
-                    ...(isSuperUser ? ["Actions"] : []),
+                    // ...(isSuperUser ? ["Actions"] : []),
                 ]}
             >
                 {loading && <TableLoading columns={isSuperUser ? 11 : 10} />}

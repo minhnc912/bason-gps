@@ -38,4 +38,8 @@ export const PRIVATE_NAV_ITEMS: NavigationItem[] = [
         label: "Tickets",
         path: ROUTES.Tickets,
     },
+    {
+        label: "Post data",
+        path: ROUTES.POSTDATA,
+    },
 ];

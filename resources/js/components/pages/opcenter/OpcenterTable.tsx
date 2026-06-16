@@ -16,7 +16,7 @@ function OpcenterTable({ opcenters, isSuperUser, onEdit, onDelete }: Props) {
 
                     <td className="px-1">{opcenter.name}</td>
 
-                    {isSuperUser && (
+                    {/* {isSuperUser && (
                         <td className="p-1">
                             <div className="flex gap-2">
                                 <button
@@ -34,7 +34,7 @@ function OpcenterTable({ opcenters, isSuperUser, onEdit, onDelete }: Props) {
                                 </button>
                             </div>
                         </td>
-                    )}
+                    )} */}
                 </tr>
             ))}
         </>

@@ -68,7 +68,7 @@ function TicketsPage() {
                 )}
             </div>
 
-            <TableSearchInput value={search} onChange={setSearch} />
+            {/* <TableSearchInput value={search} onChange={setSearch} /> */}
             <DataTable
                 headers={[
                     "Name",
