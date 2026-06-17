@@ -14,7 +14,7 @@ class HasMeaningfulRealtimeChangeAction
             return true;
         }
 
-        if ($payload->powerStatus !== null && $state->power_status !== $payload->powerStatus) {
+        if ($payload->powerStatus !== null && (bool) $state->power_status !== (bool) $payload->powerStatus) {
             return true;
         }
 

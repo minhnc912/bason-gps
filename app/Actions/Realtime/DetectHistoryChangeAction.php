@@ -10,7 +10,8 @@ class DetectHistoryChangeAction
 {
     public static function run(DeviceState $state, RealtimePayloadData $payload): bool
     {
-        if ($payload->powerStatus !== null && $state->power_status !== $payload->powerStatus) {
+        if ($payload->powerStatus !== null &&
+        (bool) $state->power_status !== (bool) $payload->powerStatus) {
             return true;
         }
 
@@ -41,9 +42,49 @@ class DetectHistoryChangeAction
         return false;
     }
 
+    public static function reason(
+        DeviceState $state,
+        RealtimePayloadData $payload
+    ): ?string
+    {
+        if (
+            $payload->powerStatus !== null
+            &&
+            (bool) $state->power_status !== (bool) $payload->powerStatus
+        ) {
+            return 'power_status_changed';
+        }
+
+        if (
+            $payload->firmwareVersion
+            &&
+            $state->firmware_version !== $payload->firmwareVersion
+        ) {
+            return 'firmware_changed';
+        }
+
+        if (
+            $payload->toolWatch
+            &&
+            $state->tool_watch !== $payload->toolWatch
+        ) {
+            return 'tool_watch_changed';
+        }
+
+        if (self::hasMovedEnough($state, $payload)) {
+            return 'device_moved';
+        }
+
+        return null;
+    }
+
     private static function hasMovedEnough(DeviceState $state, RealtimePayloadData $payload): bool
     {
-        if (!$payload->latitude || !$payload->longitude) {
+        if (
+            $payload->latitude === null
+            ||
+            $payload->longitude === null
+        ) {
             return false;
         }
 

@@ -12,17 +12,38 @@ use App\Actions\Realtime\ResolveAddressAction;
 use App\Actions\Realtime\UpdateDeviceStateAction;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LegacyDeviceIngestController extends Controller
 {
     public function __invoke(Request $request)
     {
+        Log::channel('gps')->info(
+            'Realtime payload received',
+            $request->all()
+        );
+
         $payload = ParseRealtimePayloadAction::run($request->all());
         $device = FindOrCreateDeviceAction::run($payload);
         $deviceState = InitializeDeviceStateAction::run($device, $payload);
-        $shouldCreateHistory = DetectHistoryChangeAction::run($deviceState, $payload);
+        $reason = DetectHistoryChangeAction::reason(
+            $deviceState,
+            $payload
+        );
+
+        $shouldCreateHistory = $reason !== null;
 
         if ($shouldCreateHistory) {
+            Log::channel('gps')->info(
+                'Creating device history',
+                [
+                    'device_id' => $device->id,
+                    'unit_id' => $device->unit_id,
+                    'reason' => $reason,
+                    'payload' => $payload->rawPayload,
+                ]
+            );
+
             CreateDeviceHistoryAction::run($device, $deviceState, $payload);
         }
 

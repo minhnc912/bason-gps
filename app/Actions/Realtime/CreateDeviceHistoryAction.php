@@ -18,27 +18,26 @@ class CreateDeviceHistoryAction
         return DeviceHistory::create([
             'device_id' => $device->id,
 
-            'latitude' => $state->latitude,
+            'latitude' => $payload->latitude ?? $state->latitude,
+            'longitude' => $payload->longitude ?? $state->longitude,
 
-            'longitude' => $state->longitude,
-
-            'power_status' => $state->power_status,
-
-            'temperature' => $state->temperature,
-
-            'tool_watch' => $state->tool_watch,
+            'power_status' => $payload->powerStatus ?? $state->power_status,
+            'temperature' => $payload->temperature ?? $state->temperature,
+            'tool_watch' => $payload->toolWatch ?? $state->tool_watch,
 
             'address' => $state->address,
 
             'started_at' => $startedAt,
-
             'ended_at' => $endedAt,
 
-            'duration_seconds' => $startedAt ? $startedAt->diffInSeconds($endedAt) : 0,
+            'duration_seconds' => $startedAt
+                ? $startedAt->diffInSeconds($endedAt)
+                : 0,
 
-            'operator' => $state->operator,
+            'operator' => $payload->operator ?? $state->operator,
 
-            'firmware_version' => $state->firmware_version,
+            'firmware_version' => $payload->firmwareVersion
+                ?? $state->firmware_version,
         ]);
     }
 }
