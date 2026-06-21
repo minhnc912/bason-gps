@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@hookform/resolvers": "^5.2.2",
+        "@react-google-maps/api": "^2.20.8",
         "@types/react-leaflet": "^2.8.3",
         "axios": "^1.16.0",
         "clsx": "^2.1.1",

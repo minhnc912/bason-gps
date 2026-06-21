@@ -54,8 +54,8 @@ export default function LoginPage() {
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-sm space-y-5 rounded-xl bg-white p-6 shadow-md"
             >
-                <div className="text-center">
-                    <img src={logo} alt="logo" className="w-full mb-2" />
+                <div className="text-center flex flex-col">
+                    <img src={logo} alt="logo" className="w-1/4 mb-2 self-center" />
                     <h1 className="text-4xl font-semibold">Login</h1>
                 </div>
 

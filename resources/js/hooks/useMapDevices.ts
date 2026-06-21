@@ -7,6 +7,7 @@ import { getMapDevices } from "@/services/map.service";
 import { MapDevice } from "@/types/map";
 
 import { POLLING_INTERVAL } from "@/constants/config";
+import { Device } from "@/types/devices";
 
 interface Params {
     search: string;
@@ -25,7 +26,17 @@ export function useMapDevices({ search }: Params) {
                 search,
             });
 
-            setDevices(response.data.data);
+            const mapDevices: MapDevice[] = response.data.data.map(
+                (device: MapDevice) => ({
+                    ...device,
+
+                    latitude: Number(device.latitude),
+
+                    longitude: Number(device.longitude),
+                }),
+            );
+
+            setDevices(mapDevices);
         } catch {
             toast.error("Failed to load map devices");
         } finally {

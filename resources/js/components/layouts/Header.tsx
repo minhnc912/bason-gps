@@ -42,7 +42,7 @@ export default function Header() {
                     <img
                         src={logo}
                         alt="logo"
-                        className="h-8 w-auto object-contain"
+                        className="h-12 w-auto object-contain"
                     />
                 </Link>
 
